@@ -1,25 +1,21 @@
 import { Route, Routes } from "react-router-dom";
 import MainNavLayout from "../components/layouts/MainNavLayout";
-
-// Pages publiques
 import HomePage from "../pages/HomePage";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
-
-// Pages privées
 import NotesPage from "../pages/NotesPage";
 import NoteFormPage from "../pages/NoteFormPage";
 import NoteEditPage from "../pages/NoteEditPage";
-
-// Autres
 import NotFoundPage from "../pages/NotFoundPage";
-
 import PrivateRoute from "./PrivateRoute";
+
+
+
 
 export default function AppRouter() {
     return (
         <Routes>
-            <Route element={<MainNavLayout />}>
+            <Route element={<MainNavLayout  />}>
                 {/* Routes publiques */}
                 <Route index element={<HomePage />} />
                 <Route path="register" element={<RegisterPage />} />

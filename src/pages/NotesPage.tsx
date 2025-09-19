@@ -17,11 +17,11 @@ export default function NotesPage() {
 
   return (
     <PagesLayout>
-      <Paper elevation={4} sx={{ p: 4, borderRadius: 2, border: `1px solid ${theme.palette.divider}`, boxShadow: 3 }}>
+      <Paper elevation={4} sx={{ p: 4, borderRadius: 4, border: `1px solid ${theme.palette.divider}`, boxShadow: 6 }}>
         <Typography variant="h4" mb={3}>Mes Notes</Typography>
         <Stack spacing={2}>
           {notes.map((n) => (
-            <Card key={n.id} sx={{ p: 2, border: `1px solid ${theme.palette.divider}`, borderRadius: 1, display: "flex", flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Card key={n.id} sx={{ p: 2, border: `1px solid ${theme.palette.divider}`, borderRadius: 4, boxShadow: 2, display: "flex", flexDirection: 'row', justifyContent: 'space-between' }}>
 
               <Stack>
                 <Typography variant="body1">{n.note}</Typography>

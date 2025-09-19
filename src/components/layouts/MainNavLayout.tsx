@@ -4,8 +4,8 @@ import NavBar from "./NavBar";
 export default function MainNavLayout() {
     return (
         <>
-           <NavBar/>
-           <Outlet/>
+            <NavBar  />
+            <Outlet />
         </>
     )
 }
