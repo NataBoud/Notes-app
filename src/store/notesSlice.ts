@@ -16,6 +16,7 @@ const notesSlice = createSlice({
     name: "notes",
     initialState,
     reducers: {
+        
         addNote: (state, action: PayloadAction<{ note: string }>) => {
             state.push({
                 id: (state.length + 1).toString(),
