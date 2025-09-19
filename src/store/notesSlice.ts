@@ -1,13 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { NoteInterface } from "../interfaces/NoteInterface";
 
-
-export interface Note {
-    id: string;     
-    note: string;    
-    dateAjout: string; 
-}
-const initialState: Note[] = [
+const initialState: NoteInterface[] = [
     { id: "1", note: "Première note par défaut", dateAjout: new Date().toISOString() },
     { id: "2", note: "Deuxième note par défaut", dateAjout: new Date().toISOString() },
 ];

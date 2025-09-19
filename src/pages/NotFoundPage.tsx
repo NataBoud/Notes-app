@@ -15,7 +15,7 @@ export default function NotFoundPage() {
                 textAlign: "center",
             }}
         >
-            <Typography variant="h3" color="primary" sx={{ mb: 2 }}>
+            <Typography variant="h3" color="secondary" sx={{ mb: 2 }}>
                 404
             </Typography>
             <Typography variant="h6" sx={{ mb: 4 }}>

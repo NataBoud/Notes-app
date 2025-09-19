@@ -1,22 +1,50 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../store/store";
-import { Card, Typography, Stack } from "@mui/material";
+import { Card, Paper, Stack, Typography, useTheme, IconButton, Box } from "@mui/material";
+import PagesLayout from "../components/layouts/PagesLayout";
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { deleteNote } from "../store/notesSlice";
 
 export default function NotesPage() {
   const notes = useSelector((state: RootState) => state.notes);
+  const theme = useTheme();
+  const dispatch = useDispatch();
+
+  const handleDelete = (id: string) => {
+    dispatch(deleteNote(id));
+  };
 
   return (
-    <div>
-      
-      <Stack spacing={2} sx={{ width: '100%', maxWidth: '800px', margin: '0 auto', px: 3 }}>
-        <Typography variant="h4" mb={2}>Mes Notes</Typography>
-        {notes.map((n) => (
-          <Card key={n.id} sx={{ p: 2 }}>
-            <Typography variant="body1">{n.note}</Typography>
-            <Typography variant="caption" color="text.secondary">Ajoutée le : {new Date(n.dateAjout).toLocaleString()}</Typography>
-          </Card>
-        ))}
-      </Stack>
-    </div>
+    <PagesLayout>
+      <Paper elevation={4} sx={{ p: 4, borderRadius: 2, border: `1px solid ${theme.palette.divider}`, boxShadow: 3 }}>
+        <Typography variant="h4" mb={3}>Mes Notes</Typography>
+        <Stack spacing={2}>
+          {notes.map((n) => (
+            <Card key={n.id} sx={{ p: 2, border: `1px solid ${theme.palette.divider}`, borderRadius: 1, display: "flex", flexDirection: 'row', justifyContent: 'space-between' }}>
+
+              <Stack>
+                <Typography variant="body1">{n.note}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Ajoutée le : {new Date(n.dateAjout).toLocaleString()}
+                </Typography>
+
+              </Stack>
+
+              <Box sx={{}}>
+                <IconButton color="primary" size="small" aria-label="edit note">
+                  <ModeEditOutlineOutlinedIcon />
+                </IconButton>
+                <IconButton color="error" size="small" aria-label="delete note" onClick={() => handleDelete(n.id)}>
+                  <DeleteOutlineOutlinedIcon />
+                </IconButton>
+              </Box>
+            </Card>
+          ))}
+        </Stack>
+
+      </Paper>
+
+    </PagesLayout>
   );
 }
