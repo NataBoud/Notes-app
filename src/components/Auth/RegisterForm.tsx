@@ -3,11 +3,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { registerRequest } from "../../api/authApi";
 import { registerSuccess } from "../../store/authSlice";
-import { Button, TextField, Typography, Stack, Card, Box } from "@mui/material";
+import { Button, TextField, Typography, Stack, Card, Box, useTheme } from "@mui/material";
 
 export default function RegisterForm() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -31,7 +32,7 @@ export default function RegisterForm() {
     };
 
     return (
-        <Card sx={{ p: 3 }}>
+        <Card sx={{ p: { xs: 2, sm: 4 }, border: `1px solid ${theme.palette.divider}`, borderRadius: 4, boxShadow: theme.palette.mode === "light" ? 1 : 3, }}>
             <Typography variant="h5" mb={2}>Inscription</Typography>
             {error && <Typography color="error" mb={1}>{error}</Typography>}
             <form onSubmit={handleSubmit}>

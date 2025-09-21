@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import MainNavLayout from "../components/layouts/MainNavLayout";
 import HomePage from "../pages/HomePage";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
@@ -8,14 +7,13 @@ import NoteFormPage from "../pages/NoteFormPage";
 import NoteEditPage from "../pages/NoteEditPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
-
-
+import AppLayout from "../components/layouts/PagesLayout";
 
 
 export default function AppRouter() {
     return (
         <Routes>
-            <Route element={<MainNavLayout  />}>
+            <Route element={<AppLayout />}>
                 {/* Routes publiques */}
                 <Route index element={<HomePage />} />
                 <Route path="register" element={<RegisterPage />} />

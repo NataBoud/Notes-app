@@ -1,16 +1,19 @@
-import type { ReactNode } from "react";
-import { Stack } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import NavBar from "./NavBar";
+import { Stack, Toolbar } from "@mui/material";
 
-type PagesLayoutProps = {
-    children: ReactNode;
-};
-
-export default function PagesLayout({ children }: PagesLayoutProps) {
+export default function AppLayout() {
     return (
-        <main>
-            <Stack sx={{ maxWidth: "1200px", margin: '0 auto', px: 3,py: 4}}>
-                {children}
-            </Stack>
-        </main>
+        <>
+            <NavBar />
+            {/* Décalage pour AppBar fixed */}
+            <Toolbar />
+
+            <main>
+                <Stack sx={{ maxWidth: 1200, mx: "auto", px: 3, py: 4 }}>
+                    <Outlet />
+                </Stack>
+            </main>
+        </>
     );
 }

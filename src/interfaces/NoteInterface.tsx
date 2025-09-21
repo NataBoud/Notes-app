@@ -1,5 +1,7 @@
 export interface NoteInterface {
     id: string;
-    note: string;
-    dateAjout: string;
+    title: string;
+    content: string;
+    createdAt: string;
+    updatedAt?: string;
 }

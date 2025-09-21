@@ -1,5 +1,8 @@
 ## Exerice 6 Application de Notes Sécurisées (React + Routing + JWT)
 
+## db ==> jdbc:h2:mem:notesdb
+## docker run -d -p 8080:8080 christopheutp/note-backend
+
 ### Objectif
 
 Créer une **application React multi-pages** permettant à un utilisateur authentifié via **JWT** de gérer ses notes (CRUD) en communiquant avec un **backend Spring Boot sécurisé**.

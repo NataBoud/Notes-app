@@ -2,34 +2,36 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { NoteInterface } from "../interfaces/NoteInterface";
 
-const initialState: NoteInterface[] = [
-    { id: "1", note: "Première note par défaut", dateAjout: new Date().toISOString() },
-    { id: "2", note: "Deuxième note par défaut", dateAjout: new Date().toISOString() },
-];
+const initialState: NoteInterface[] = [];
+
 
 const notesSlice = createSlice({
     name: "notes",
     initialState,
     reducers: {
-        
-        addNote: (state, action: PayloadAction<{ note: string }>) => {
+        addNote: (state, action: PayloadAction<{ id: string; title: string; content: string }>) => {
             state.push({
-                id: (state.length + 1).toString(),
-                note: action.payload.note,
-                dateAjout: new Date().toISOString()
+                id: action.payload.id.toString(),
+                title: action.payload.title,
+                content: action.payload.content,
+                createdAt: new Date().toISOString(),
             });
         },
         deleteNote: (state, action: PayloadAction<string>) => {
             return state.filter(n => n.id !== action.payload);
         },
-        updateNote: (state, action: PayloadAction<{ id: string; note: string }>) => {
-            const noteToUpdate = state.find(n => n.id === action.payload.id);
+        updateNote: (state, action: PayloadAction<{ id: string; title: string; content: string }>) => {
+            const noteToUpdate = state.find(n => n.id === action.payload.id.toString());
             if (noteToUpdate) {
-                noteToUpdate.note = action.payload.note;
+                noteToUpdate.title = action.payload.title;
+                noteToUpdate.content = action.payload.content;
             }
+        },
+        setNotes: (state, action: PayloadAction<NoteInterface[]>) => {
+            return action.payload; // pour remplir le store depuis le backend
         },
     },
 });
 
-export const { addNote, deleteNote, updateNote } = notesSlice.actions;
+export const { addNote, deleteNote, updateNote, setNotes } = notesSlice.actions;
 export default notesSlice.reducer;
