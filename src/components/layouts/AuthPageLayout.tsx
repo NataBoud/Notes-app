@@ -8,7 +8,7 @@ type AuthPageLayoutProps = {
 export default function AuthPageLayout({ children }: AuthPageLayoutProps) {
     return (
         <main>
-            <Stack sx={{ maxWidth: '800px', margin: '0 auto', px: 3, py: 4}}>
+            <Stack sx={{ maxWidth: '800px', margin: '0 auto', py: 4}}>
                 {children}
             </Stack>
         </main>

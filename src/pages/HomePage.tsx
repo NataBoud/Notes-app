@@ -5,7 +5,7 @@ export default function HomePage() {
 
     return (
         <>
-            <Typography variant="h4" mb={2}>Notes Aplication</Typography>
+            <Typography variant="h4" mb={2}>Notes Application</Typography>
         </>
 
     );

@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { TextField, Button, Stack, Typography, useTheme, Card } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addNote } from "../store/notesSlice";
+import { addNoteRequest } from "../api/noteApi";
 
 export default function NoteFormPage() {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  ;
+  
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,21 +22,16 @@ export default function NoteFormPage() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:8080/api/notes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ title, content }),
-      });
+      if (!token) throw new Error("Utilisateur non authentifié");
 
-      if (!response.ok) {
-        throw new Error("Erreur lors de la création de la note");
-      }
-      const newNote = await response.json();
-      dispatch(addNote({ id: newNote.id.toString(), title: newNote.title, content: newNote.content }));
+      const newNote = await addNoteRequest(title, content, token); 
 
-      // Redirection vers la liste après succès
+      dispatch(addNote({
+        id: newNote.id.toString(),
+        title: newNote.title,
+        content: newNote.content
+      }));
+
       navigate("/notes");
     } catch (err) {
       console.error(err);
@@ -48,13 +44,7 @@ export default function NoteFormPage() {
   return (
 
       <Card 
-        sx={{
-          p: { xs: 2, sm: 4 },
-          borderRadius: 4,
-          border: `1px solid ${theme.palette.divider}`,
-          boxShadow: theme.palette.mode === "light" ? 3 : 6,
-        }}
-      >
+        sx={{p: { xs: 2, sm: 4 }, borderRadius: 4, border: `1px solid ${theme.palette.divider}`, boxShadow: theme.palette.mode === "light" ? 3 : 6,}} >
         <Typography variant="h5" mb={3}> Nouvelle note</Typography>
 
         <form onSubmit={handleSubmit}>

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { TextField, Button, Stack, Typography, Card, useTheme } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { updateNote, addNote } from "../store/notesSlice";
-import type { RootState } from "../store/store";
+import { useDispatch } from "react-redux";
+import { updateNote } from "../store/notesSlice";
 import type { NoteInterface } from "../interfaces/NoteInterface";
+import { fetchNoteById, updateNoteRequest } from "../api/noteApi";
 
 export default function NoteEditPage() {
   const theme = useTheme();
@@ -12,59 +12,42 @@ export default function NoteEditPage() {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const storeNote = useSelector((state: RootState) =>
-    state.notes.find(n => n.id === id)
-  );
-
-  const [note, setNote] = useState<NoteInterface | null>(storeNote || null);
-  const [title, setTitle] = useState(note?.title || "");
-  const [content, setContent] = useState(note?.content || "");
+  const [note, setNote] = useState<NoteInterface | null>(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingNote, setLoadingNote] = useState(true);
 
+  // Charger la note depuis le backend
   useEffect(() => {
-    // si la note n’est pas dans le store, la charger depuis le backend
-    const fetchNote = async () => {
-      if (!note) {
-        try {
-          const token = localStorage.getItem("token");
-          const response = await fetch(`http://localhost:8080/api/notes/${id}`, {
-            headers: { "Authorization": `Bearer ${token}` }
-          });
-          if (!response.ok) throw new Error("Note introuvable");
-          const data: NoteInterface = await response.json();
-          setNote(data);
-          setTitle(data.title);
-          setContent(data.content);
-
-        } catch (err) {
-          console.error(err);
-          setNote(null);
-        }
+    const loadNote = async () => {
+      try {
+        if (!id) return;
+        const token = localStorage.getItem("token") || "";
+        const data = await fetchNoteById(id, token);
+        setNote(data);
+        setTitle(data.title);
+        setContent(data.content);
+      } catch (err) {
+        console.error(err);
+        setNote(null);
+      } finally {
+        setLoadingNote(false);
       }
     };
 
-    fetchNote();
-  }, [id, note, dispatch]);
+    loadNote();
+  }, [id]);
 
+  // Mettre à jour la note
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) return;
+    if (!id || !title.trim() || !content.trim()) return;
 
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8080/api/notes/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ title, content }),
-      });
-
-      if (!response.ok) throw new Error("Erreur lors de la mise à jour de la note");
-
-      const updatedNote: NoteInterface = await response.json();
+      const token = localStorage.getItem("token") || "";
+      const updatedNote = await updateNoteRequest(id, { title, content }, token);
 
       dispatch(updateNote({
         id: updatedNote.id.toString(),
@@ -81,6 +64,7 @@ export default function NoteEditPage() {
     }
   };
 
+  if (loadingNote) return <Typography>Chargement de la note...</Typography>;
   if (!note) return <Typography>Note introuvable</Typography>;
 
   return (

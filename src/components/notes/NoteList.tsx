@@ -1,10 +1,11 @@
-import { Stack, Paper, useTheme } from "@mui/material";
+import { Stack, Paper, useTheme, Typography } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import NoteItem from "./NoteItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setNotes } from "../../store/notesSlice";
+import { fetchNotes } from "../../api/noteApi";
 
 
 export default function NoteList() {
@@ -12,24 +13,22 @@ export default function NoteList() {
     const theme = useTheme();
     const dispatch = useDispatch();
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        const fetchNotes = async () => {
+        const loadNotes = async () => {
             try {
-                const token = localStorage.getItem("token");
-                const response = await fetch("http://localhost:8080/api/notes", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                if (!response.ok) throw new Error("Erreur de chargement des notes");
-                const fetchedNotes = await response.json();
+                const token = localStorage.getItem("token") || "";
+                const fetchedNotes = await fetchNotes(token);
                 dispatch(setNotes(fetchedNotes));
             } catch (err) {
                 console.error(err);
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchNotes();
+        loadNotes();
     }, [dispatch]);
 
 
@@ -43,11 +42,17 @@ export default function NoteList() {
                 boxShadow: theme.palette.mode === "light" ? 3 : 6,
             }}
         >
-            <Stack spacing={1}>
-                {notes.map((note) => (
-                    <NoteItem key={note.id} note={note} />
-                ))}
-            </Stack>
+            {loading ? (
+                <Typography>Chargement des notes...</Typography>
+            ) : notes.length === 0 ? (
+                <Typography>Vous n'avez pas encore de notes</Typography>
+            ) : (
+                <Stack spacing={1}>
+                    {notes.map((note) => (
+                        <NoteItem key={note.id} note={note} />
+                    ))}
+                </Stack>
+            )}
         </Paper>
     );
 }
