@@ -10,6 +10,16 @@ Ce projet aborde le **routing**, les **routes protégées**, la **gestion d’un
 
 ---
 
+![home-page-dark-theme](public/assets/home-page-dark-theme.png)
+![connexion](public/assets/connexion.png)
+![pas-de-notes](public/assets/pas-de-notes.png)
+![mes-notes](public/assets/mes-notes.png)
+![update-note](public/assets/update-note.png)
+![form-add-note](public/assets/form-add-note.png)
+![form-add-note-2](public/assets/form-add-note-2.png)
+![light-theme-1](public/assets/light-theme-1.png)
+![light-theme-2](public/assets/light-theme-2.png)
+
 ### Fonctionnalités attendues
 
 1. **Authentification**
